@@ -8,6 +8,7 @@ import {
   statelessSessions,
   withItemData,
 } from '@keystone-next/keystone/session';
+import { insertSeedData } from './seed-data';
 const databaseURL = process.env.DATABASE_URL;
 
 const sessionConfig = {
@@ -35,6 +36,11 @@ export default withAuth(
     db: {
       adapter: 'mongoose',
       url: databaseURL!,
+      async onConnect(keystone) {
+        if (process.argv.includes('--seed-data')) {
+          await insertSeedData(keystone);
+        }
+      },
     },
     lists: createSchema({
       User,

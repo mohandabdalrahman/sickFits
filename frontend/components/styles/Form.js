@@ -36,6 +36,9 @@ const Form = styled.form`
       border-color: var(--red);
     }
   }
+  button {
+    cursor: pointer;
+  }
   button,
   input[type='submit'] {
     width: auto;

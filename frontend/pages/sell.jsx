@@ -1,7 +1,8 @@
-const  SellPage = () => {
+import CreateProduct from '../components/CreateProduct'
+const SellPage = () => {
   return (
     <div>
-      sell
+      <CreateProduct />
     </div>
   )
 }
