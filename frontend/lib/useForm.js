@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 const useForm = (initial = {}) => {
   const [inputs, setInputs] = useState(initial)
   const initialValues = Object.values(initial)
-  
+
   useEffect(() => {
     setInputs(initial)
   }, [initialValues])

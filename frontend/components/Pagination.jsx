@@ -5,6 +5,7 @@ import PAGINATION_QUERY from '../graphql/queries/pagination'
 import { useQuery } from '@apollo/client'
 import DisplayError from './ErrorMessage'
 import { perPage } from '../config'
+
 const Pagination = ({ page }) => {
   const { data, loading, error } = useQuery(PAGINATION_QUERY)
   if (loading) return <p>Loading...</p>;
