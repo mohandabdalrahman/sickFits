@@ -7,6 +7,21 @@ query CURRENT_USER_QUERY{
     id
     name
     email
+    cart{
+      id
+      quantity
+      product{
+        id
+        price
+        name
+        description
+        photo{
+          image{
+            publicUrlTransformed
+          }
+        }
+      }
+    }
 
   }
 }
