@@ -10,6 +10,7 @@ import {
 } from '@keystone-next/keystone/session';
 import { insertSeedData } from './seed-data';
 import { sendPasswordResetEmail } from './lib/mail';
+import { CartItem } from './schemas/CartItem';
 const databaseURL = process.env.DATABASE_URL;
 
 const sessionConfig = {
@@ -52,6 +53,7 @@ export default withAuth(
       User,
       Product,
       ProductImage,
+      CartItem,
     }),
     ui: {
       // TODO change this for roles
