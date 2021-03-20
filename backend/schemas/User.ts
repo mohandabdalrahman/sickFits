@@ -7,10 +7,10 @@ export const User = list({
     password: password(),
     cart: relationship({
       ref: 'CartItem.user',
-      ui: {
-        createView: { fieldMode: 'hidden' },
-        itemView: { fieldMode: 'read' },
-      },
+      // ui: {
+      //   createView: { fieldMode: 'hidden' },
+      //   itemView: { fieldMode: 'read' },
+      // },
     }),
   },
 });

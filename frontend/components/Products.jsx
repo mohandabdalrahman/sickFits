@@ -17,7 +17,6 @@ const Products = ({ page }) => {
       first: perPage
     }
   })
-  console.log('🚀 ~ file: Products.jsx ~ line 6 ~ Products ~ data', data)
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error... {error.message} </p>;
   return (

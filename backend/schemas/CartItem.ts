@@ -12,9 +12,9 @@ export const CartItem = list({
     }),
     user: relationship({ ref: 'User.cart' }),
   },
-  ui: {
-    listView: {
-      initialColumns: ['product', 'quantity', 'user'],
-    },
-  },
+  // ui: {
+  //   listView: {
+  //     initialColumns: ['product', 'quantity', 'user'],
+  //   },
+  // },
 });
