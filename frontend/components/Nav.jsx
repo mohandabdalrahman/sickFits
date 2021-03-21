@@ -10,6 +10,7 @@ const Nav = () => {
   const carts = []
   carts.push(user?.cart)
   const { openCart } = useCart()
+  console.log('🚀 ~ file: Nav.jsx ~ line 17 ~ Nav ~ carts', carts)
   return (
     <NavStyles>
       <Link href="/products">Products</Link>
@@ -21,7 +22,7 @@ const Nav = () => {
           <SignOut />
           <button type="button" onClick={openCart}>
             My Cart
-            <CartCount count={carts.reduce((tally, cartItem) => tally + cartItem.quantity, 0)} />
+            {/* {carts.length  && <CartCount count={carts.reduce((tally, cartItem) => tally + cartItem.quantity, 0)} />} */}
           </button>
         </>
       ) : <Link href="/signin">Sign In</Link>

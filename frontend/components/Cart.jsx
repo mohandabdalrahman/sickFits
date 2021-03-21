@@ -19,13 +19,14 @@ const Cart = () => {
         <CloseButton onClick={closeCart}>&times;</CloseButton>
       </header>
       <ul>
-        {carts.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} />)}
+        {carts.length > 1 && carts.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} />)}
       </ul>
       <footer>
-        <p>{formatMoney(calcTotalPrice(carts))}</p>
+        <p>{carts.length > 1 && formatMoney(calcTotalPrice(carts))}</p>
       </footer>
     </CartStyles>
   )
+
 }
 
 export default Cart
