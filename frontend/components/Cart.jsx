@@ -11,8 +11,6 @@ const Cart = () => {
   const me = useUser()
   const { cartOpen, closeCart } = useCart()
   if (!me) return null
-  const carts = []
-  carts.push(me.cart)
   return (
     <CartStyles open={cartOpen}>
       <header>
@@ -20,10 +18,10 @@ const Cart = () => {
         <CloseButton onClick={closeCart}>&times;</CloseButton>
       </header>
       <ul>
-        {carts.length > 1 && carts.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} />)}
+        {me.cart.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} />)}
       </ul>
       <footer>
-        <p>{carts.length > 1 && formatMoney(calcTotalPrice(carts))}</p>
+        <p>{formatMoney(calcTotalPrice(me.cart))}</p>
         <Checkout />
       </footer>
     </CartStyles>

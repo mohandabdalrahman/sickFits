@@ -79,9 +79,11 @@ export const extendGraphqlSchema = graphQLSchemaExtension({
         });
         // calc total price
         const cartItems = user?.cart.filter((cartItem) => cartItem.product);
+        console.log('🚀 ~ file: index.ts ~ line 82 ~ checkout ~ cartItems', cartItems)
         const amount = cartItems.reduce((tally, cartItem) => {
           return tally + cartItem.product.price * cartItem.quantity;
         }, 0);
+        console.log('🚀 ~ file: index.ts ~ line 86 ~ amount ~ amount', amount)
         // create charge
         const charge = await stripeConfig.paymentIntents
           .create({
@@ -93,6 +95,34 @@ export const extendGraphqlSchema = graphQLSchemaExtension({
             console.log('🚀 ~ file: index.ts ~ line 91 ~ checkout ~ err', err);
             throw new Error(err.message);
           });
+        console.log('🚀 ~ file: index.ts ~ line 98 ~ checkout ~ charge', charge)
+
+        const orderItems = cartItems.map((cartItem) => {
+          const orderItem = {
+            name: cartItem.product.name,
+            description: cartItem.product.description,
+            price: cartItem.product.price,
+            quantity: cartItem.quantity,
+            photo: { connect: { id: cartItem.product.photo.id } },
+          };
+          return orderItem;
+        });
+        // create order
+        const order = await context.lists.Order.createOne({
+          data: {
+            total: charge.amount,
+            charge: charge.id,
+            items: { create: orderItems },
+            user: { connect: { id: userId } },
+          },
+        });
+
+        const cartItemIds = cartItems.map((cartItem) => cartItem.id);
+        await context.lists.CartItem.deleteMany({
+          ids: cartItemIds,
+        });
+
+        return order;
       },
     },
   },

@@ -1,8 +1,7 @@
-import styled from 'styled-components'
+import { useMutation } from '@apollo/client';
+import styled from 'styled-components';
+import DELETE_CART_ITEM from '../graphql/mutations/deleteCart';
 import formatMoney from '../lib/formatMoney';
-import CURRENT_USER_QUERY from '../graphql/queries/currentUser'
-import DELETE_CART_ITEM from '../graphql/mutations/deleteCart'
-import { useMutation } from '@apollo/client'
 const CartItemStyles = styled.li`
 padding:1rem 0;
 border-bottom:1px solid var(--lightGrey);
@@ -26,7 +25,7 @@ border:0;
 }
 `
 const update = (cache, payload) => {
-  cache.evict(cache.identify(payload.data.deleteCart));
+  cache.evict(cache.identify(payload.data.deleteCartItem));
 }
 
 const CartItem = ({ cartItem }) => {
