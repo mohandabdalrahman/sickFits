@@ -1,9 +1,11 @@
 import { graphQLSchemaExtension } from '@keystone-next/keystone/schema';
+import stripeConfig from '../lib/stripe';
 
 export const extendGraphqlSchema = graphQLSchemaExtension({
   typeDefs: `
   type Mutation{
     addToCart(productId:ID):CartItem
+    checkout(token:String!):Order
   }
   `,
   resolvers: {
@@ -21,7 +23,6 @@ export const extendGraphqlSchema = graphQLSchemaExtension({
             product: { id: productId },
           },
           resolveFields: 'id,quantity',
-          
         });
 
         const [existingCartItem] = allCartItems;
@@ -45,6 +46,53 @@ export const extendGraphqlSchema = graphQLSchemaExtension({
             },
           },
         });
+      },
+      async checkout(root, { token }: { token: string }, context) {
+        const userId = context.session.itemId;
+        if (!userId) {
+          throw new Error('You must sign in to create order');
+        }
+        const user = await context.lists.User.findOne({
+          where: { id: userId },
+          resolveFields: `
+          id
+          name
+          email
+          cart{
+            id
+            quantity
+            product{
+              id
+              name
+              price
+              description
+              photo{
+                id
+                image{
+                  id
+                  publicUrlTransformed
+                }
+              }
+            }
+          }
+          `,
+        });
+        // calc total price
+        const cartItems = user?.cart.filter((cartItem) => cartItem.product);
+        const amount = cartItems.reduce((tally, cartItem) => {
+          return tally + cartItem.product.price * cartItem.quantity;
+        }, 0);
+        // create charge
+        const charge = await stripeConfig.paymentIntents
+          .create({
+            amount,
+            currency: 'USD',
+            payment_method: token,
+          })
+          .catch((err) => {
+            console.log('🚀 ~ file: index.ts ~ line 91 ~ checkout ~ err', err);
+            throw new Error(err.message);
+          });
       },
     },
   },

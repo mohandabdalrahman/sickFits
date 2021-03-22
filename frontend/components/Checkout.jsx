@@ -4,6 +4,9 @@ import { CardElement, Elements, useElements, useStripe } from '@stripe/react-str
 import SickButton from './styles/SickButton'
 import { useState } from 'react'
 import nProgress from 'nprogress'
+import { useMutation } from '@apollo/client'
+import CREATE_ORDER from '../graphql/mutations/createOrder'
+
 const CheckoutFormStyles = styled.form`
 box-shadow:0 1px 2px 2px rgba(0,0,0,0.04);
 border:1px solid rgba(0,0,0,0.06);
@@ -20,8 +23,8 @@ const CheckoutForm = () => {
   const [loading, setLoading] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
-
-  const handleSubmit = async (e) => { 
+  const [checkout, { data, }] = useMutation(CREATE_ORDER)
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
     // start page transition
@@ -34,7 +37,11 @@ const CheckoutForm = () => {
 
     if (error) {
       setError(error)
+      nProgress.done()
+
     }
+
+    const order = await checkout({ variables: { token: paymentMethod.id } })
 
     setLoading(false)
     nProgress.done()
