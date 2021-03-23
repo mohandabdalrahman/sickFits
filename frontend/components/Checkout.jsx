@@ -48,7 +48,7 @@ const CheckoutForm = () => {
     console.log('🚀 ~ file: Checkout.jsx ~ line 44 ~ handleSubmit ~ order', order)
 
     router.push({
-      pathname: '/orders',
+      pathname: '/order',
       query: { id: order.data.checkout.id }
     })
     closeCart()
