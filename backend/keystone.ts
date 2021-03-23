@@ -14,6 +14,8 @@ import { CartItem } from './schemas/CartItem';
 import { extendGraphqlSchema } from './mutations/index';
 import { OrderItem } from './schemas/OrderItem';
 import { Order } from './schemas/Order';
+import { Role } from './schemas/Role';
+import { permissionsList } from './schemas/fields';
 const databaseURL = process.env.DATABASE_URL;
 
 const sessionConfig = {
@@ -59,6 +61,7 @@ export default withAuth(
       CartItem,
       OrderItem,
       Order,
+      Role,
     }),
     extendGraphqlSchema,
     ui: {
@@ -71,7 +74,7 @@ export default withAuth(
     //@ts-ignore
     session: withItemData(statelessSessions(sessionConfig), {
       // graphql query
-      User: `id`,
+      User: `id name email role {${permissionsList.join(' ')}}`,
     }),
   })
 );
